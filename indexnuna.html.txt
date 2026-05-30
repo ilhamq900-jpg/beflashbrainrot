@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nuna Store — Marketplace terpercaya untuk jual beli item Roblox Brainrot, limited, dan aksesoris gaming dengan harga termurah.">
+    <title>Nuna Store | Premium Market</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --bg-main: #0a0a0a;
+            --bg-card: #111827;
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #06b6d4;
+            --text-white: #ffffff;
+            --text-gray: #9ca3af;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --font-main: 'Poppins', sans-serif;
+            --glow: 0 0 20px rgba(139, 92, 246, 0.5);
+            --transition: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-main);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 80px 0; }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            font-family: var(--font-main);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.7);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-primary);
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        /* ✅ PERBAIKAN: Tombol disabled untuk item habis */
+        .btn-disabled {
+            background: #374151;
+            color: #6b7280;
+            cursor: not-allowed;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; color: var(--text-gray); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; width: 100%; padding: 20px 0; z-index: 1000;
+            transition: var(--transition); background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .navbar .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .logo i { color: var(--accent-secondary); }
+        .nav-menu { display: flex; gap: 30px; }
+        .nav-link { font-weight: 500; font-size: 0.95rem; transition: var(--transition); position: relative; }
+        .nav-link:hover { color: var(--accent-secondary); }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent-secondary); transition: var(--transition); }
+        .nav-link:hover::after { width: 100%; }
+        .hamburger { display: none; cursor: pointer; font-size: 1.5rem; background: none; border: none; color: var(--text-white); }
+
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%); opacity: 0.2; filter: blur(80px); z-index: -1; }
+        .hero::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, var(--accent-secondary) 0%, transparent 70%); opacity: 0.15; filter: blur(80px); z-index: -1; }
+        .hero-content { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 50px; }
+        .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; }
+        .hero-text p { color: var(--text-gray); font-size: 1.1rem; margin-bottom: 30px; max-width: 500px; }
+        .hero-btns { display: flex; gap: 15px; }
+        .hero-image { position: relative; animation: float 6s ease-in-out infinite; }
+        .hero-image img { border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.1); }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+
+        /* --- HOW TO ORDER --- */
+        .steps-container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; }
+        .step-item { flex: 1; text-align: center; min-width: 200px; position: relative; z-index: 2; }
+        .step-number { width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-weight: 700; font-size: 1.2rem; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+        .step-item h4 { margin-bottom: 10px; }
+        .step-item p { color: var(--text-gray); font-size: 0.9rem; }
+
+        /* --- CATALOG SECTION --- */
+        .catalog-section { text-align: center; }
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 20px; }
+        .catalog-card {
+            background: var(--bg-card); border-radius: 20px; padding: 30px 20px;
+            border: 1px solid rgba(255,255,255,0.05); transition: var(--transition);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 10px; position: relative; overflow: hidden;
+        }
+        .catalog-card:hover { transform: translateY(-10px); border-color: var(--accent-primary); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.15); }
+        
+        .game-logo-wrapper {
+            width: 90px; height: 90px; border-radius: 20px; background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center;
+            margin-bottom: 5px; box-shadow: 0 0 20px rgba(139, 92, 246, 0.2); transition: var(--transition);
+            overflow: hidden;
+        }
+        .catalog-card:hover .game-logo-wrapper { transform: scale(1.05); box-shadow: 0 0 30px rgba(6, 182, 212, 0.4); border-color: var(--accent-secondary); }
+        
+        .game-logo-wrapper img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 18px;
+        }
+
+        .catalog-badge {
+            background: var(--danger);
+            color: white; padding: 3px 10px; border-radius: 20px;
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .catalog-card h3 { font-size: 1.3rem; }
+        .catalog-card p { color: var(--text-gray); font-size: 0.85rem; margin-bottom: 10px; }
+
+        /* --- STATS SECTION --- */
+        .stats {
+            background: var(--bg-card); padding: 25px 0;
+            border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .stats-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; text-align: center; }
+        .stat-item h3 { font-size: 1.5rem; color: var(--accent-secondary); margin-bottom: 2px; }
+        .stat-item p { color: var(--text-gray); font-size: 0.75rem; }
+
+        /* --- MODAL POP-UP --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--bg-main); width: 90%; max-width: 1000px; max-height: 85vh;
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); position: relative;
+            overflow: hidden; display: flex; flex-direction: column;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.2); transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; border-bottom: 1px solid rgba(255,255,255,0.05); background: var(--bg-card); }
+        .modal-header h2 { font-size: 1.5rem; display: flex; align-items: center; gap: 15px; }
+        .modal-logo { width: 35px; height: 35px; border-radius: 8px; object-fit: cover; }
+        .close-modal { background: none; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer; transition: var(--transition); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .close-modal:hover { background: rgba(255,255,255,0.1); color: var(--danger); transform: rotate(90deg); }
+        .modal-body { padding: 30px; overflow-y: auto; }
+        .modal-body::-webkit-scrollbar { width: 8px; }
+        .modal-body::-webkit-scrollbar-track { background: var(--bg-main); }
+        .modal-body::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 4px; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .product-card { background: var(--bg-card); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); position: relative; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); border-color: var(--accent-secondary); }
+        .product-card.sold-out-card { opacity: 0.6; }
+        .product-card.sold-out-card:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.05); }
+        .product-img { height: 180px; overflow: hidden; position: relative; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .product-card:hover .product-img img { transform: scale(1.1); }
+        .product-card.sold-out-card:hover .product-img img { transform: none; }
+        .stock-badge { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: var(--success); border: 1px solid var(--success); }
+        .stock-badge.low { color: var(--warning); border-color: var(--warning); }
+        .stock-badge.sold-out { color: #6b7280; border-color: #6b7280; }
+        .product-info { padding: 20px; }
+        .product-name { font-size: 1rem; font-weight: 600; margin-bottom: 5px; min-height: 40px; }
+        .product-category { font-size: 0.8rem; color: var(--accent-secondary); margin-bottom: 15px; display: block; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .product-price { font-size: 1.2rem; font-weight: 700; }
+        .product-price.sold-out-price { color: #6b7280; font-size: 0.9rem; font-weight: 400; font-style: italic; }
+        .btn-sm { padding: 8px 16px; font-size: 0.85rem; border-radius: 8px; display: flex; align-items: center; gap: 5px; }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .testimonial-card { background: var(--bg-card); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .review-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-primary); }
+        .user-info h4 { font-size: 1rem; }
+        .stars { color: #fbbf24; font-size: 0.8rem; }
+        .review-text { color: var(--text-gray); font-size: 0.9rem; font-style: italic; }
+
+        /* --- FAQ --- */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--bg-card); margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .faq-question { padding: 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; transition: var(--transition); }
+        .faq-question:hover { background: rgba(255,255,255,0.02); }
+        .faq-answer { max-height: 0; overflow: hidden; padding: 0 20px; background: rgba(0,0,0,0.2); color: var(--text-gray); font-size: 0.95rem; transition: max-height 0.3s ease, padding 0.3s ease; }
+        .faq-item.active .faq-answer { max-height: 200px; padding: 20px; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--accent-secondary); }
+
+        /* --- FOOTER --- */
+        footer { background: #050505; padding: 60px 0 20px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-info p { color: var(--text-gray); margin-top: 15px; font-size: 0.9rem; }
+        .footer-links h4 { margin-bottom: 20px; color: white; }
+        .footer-links ul li { margin-bottom: 10px; }
+        .footer-links a { color: var(--text-gray); transition: var(--transition); font-size: 0.9rem; }
+        .footer-links a:hover { color: var(--accent-secondary); padding-left: 5px; }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
+        .social-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: var(--transition); }
+        .social-icon:hover { background: var(--accent-primary); color: white; transform: translateY(-3px); }
+        .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; font-size: 0.8rem; color: var(--text-gray); }
+
+        /* --- FLOATING WHATSAPP --- */
+        .float-wa { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); z-index: 999; transition: var(--transition); animation: pulse 2s infinite; }
+        .float-wa:hover { transform: scale(1.1); background: #128C7E; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast {
+            position: fixed; bottom: 100px; right: 30px; background: var(--bg-card);
+            border: 1px solid var(--danger); color: var(--danger); padding: 12px 20px;
+            border-radius: 10px; font-size: 0.85rem; font-weight: 600; z-index: 3000;
+            transform: translateX(150%); transition: transform 0.4s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .toast.show { transform: translateX(0); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-btns { justify-content: center; flex-wrap: wrap; }
+            .hero-image { display: none; }
+            .nav-menu { position: absolute; top: 70px; left: -100%; width: 100%; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); flex-direction: column; padding: 20px; text-align: center; transition: var(--transition); border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .nav-menu.active { left: 0; }
+            .hamburger { display: block; }
+            .stats-grid { gap: 20px; }
+            .modal-content { width: 95%; max-height: 90vh; border-radius: 15px; }
+            .modal-body { padding: 15px; }
+            .products-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+            .product-name { font-size: 0.9rem; min-height: auto; }
+            .product-price { font-size: 1rem; }
+            .section-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-gamepad"></i>
+                <span class="text-gradient">NUNA STORE</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#products" class="nav-link">Produk</a></li>
+                <li><a href="#how-to" class="nav-link">Cara Order</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimoni</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Mau beli? <span class="text-gradient">scroll kebawah ya!</span></h1>
+                    <p>Marketplace terpercaya untuk jual beli item Roblox Brainrot, limited, dan aksesoris gaming langka dengan harga termurah dan proses instan.</p>
+                    <div class="hero-btns">
+                        <a href="#products" class="btn btn-primary"><i class="fa-solid fa-cart-shopping"></i> Lihat Produk</a>
+                        <a href="https://wa.me/6285184399286" target="_blank" rel="noopener" class="btn btn-outline"><i class="fa-brands fa-whatsapp"></i> Order via WA</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://picsum.photos/seed/robloxfuture/600/400" alt="Roblox Character" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HOW TO ORDER -->
+    <section id="how-to" class="section-padding" style="background: #0d0d0d;">
+        <div class="container">
+            <h2 class="section-title">Cara <span class="text-gradient">Order</span></h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <h4>Pilih Item</h4>
+                    <p>Cari item incaranmu di katalog produk kami.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <h4>Klik Order WA</h4>
+                    <p>Tombol akan mengarahkan ke WhatsApp Admin.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <h4>Pembayaran</h4>
+                    <p>Lakukan pembayaran via E-Wallet/Bank.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <h4>Trade Instan</h4>
+                    <p>Item langsung masuk ke akun Roblox Anda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATALOG SECTION -->
+    <section id="products" class="section-padding catalog-section">
+        <div class="container">
+            <h2 class="section-title">Pilih <span class="text-gradient">Katalog Game</span></h2>
+            <p class="section-subtitle">Pilih kategori game yang kamu cari, klik untuk membuka daftar produk!</p>
+            
+            <div class="catalog-grid">
+                <!-- Katalog 1: Be Flash -->
+                <div class="catalog-card">
+                    <div class="game-logo-wrapper">
+                        <img src="https://i.ibb.co.com/kVFG1ngd/IMG-2869.jpg" alt="Be Flash Brainrots">
+                    </div>
+                    <span class="catalog-badge">Populer</span>
+                    <h3>Be Flash <span class="text-gradient">Brainrots</span></h3>
+                    <p>Koleksi item termurah dan terlengkap dari game Be Flash.</p>
+                    <button class="btn btn-primary" id="openCatalog1Btn" aria-haspopup="dialog">
+                        <i class="fa-solid fa-book-open"></i> Buka Katalog
+                    </button>
+                </div>
+
+                <!-- Katalog 2: Inside Brainrot Head -->
+                <div class="catalog-card">
+                    <div class="game-logo-wrapper">
+                        <img src="https://i.ibb.co.com/4RZ3fq7G/IMG-2758.jpg" alt="Inside Brainrot Head">
+                    </div>
+                    <span class="catalog-badge">Populer</span>
+                    <h3>Inside Brainrot <span class="text-gradient">Head</span></h3>
+                    <p>Item rare dan mutasi langka dari Inside Brainrot Head.</p>
+                    <button class="btn btn-primary" id="openCatalog2Btn" aria-haspopup="dialog">
+                        <i class="fa-solid fa-book-open"></i> Buka Katalog
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="1500">0</span>+</h3>
+                    <p>Transaksi Sukses</p>
+                </div>
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="500">0</span>+</h3>
+                    <p>Item Tersedia</p>
+                </div>
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p>Layanan Support</p>
+                </div>
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="100">0</span>%</h3>
+                    <p>Terpercaya</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL KATALOG 1: BE FLASH -->
+    <div class="modal-overlay" id="catalog1Modal" role="dialog" aria-modal="true" aria-labelledby="catalog1Title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="catalog1Title">
+                    <img src="https://i.ibb.co.com/kVFG1ngd/IMG-2869.jpg" alt="Logo Be Flash" class="modal-logo">
+                    Be Flash Brainrots
+                </h2>
+                <button class="close-modal" id="closeCatalog1Btn" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge">Tersedia 70+</span>
+                            <img src="https://i.ibb.co.com/FkGmzyrQ/IMG-2360.jpg" alt="Tiktak Hecker" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">TIKTAK HECKER LEVEL 40</h3>
+                            <span class="product-category">Infinity</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 2.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%20Tiktak%20Hecker%20Level%2040" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge">Tersedia</span>
+                            <img src="https://i.ibb.co.com/pvhvxgHC/IMG-2845.jpg" alt="Ketupat Mutasi Emas Berlian" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Ketupat Kepat Mutasi Emas/Berlian</h3>
+                            <span class="product-category">TRINITY</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 5.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%20Ketupat%20Mutasi%20Emas%2FBerlian" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge low">Stok Menipis</span>
+                            <img src="https://i.ibb.co.com/PZfszx0y/IMG-2848.jpg" alt="Ketupat Mutasi Lava" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Ketupat Kepat Mutasi Lava/Perment/Rainbow</h3>
+                            <span class="product-category">Trinity</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 8.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%20Ketupat%20Mutasi%20Lava%2FPerment%2FRainbow" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge low">Stok Menipis</span>
+                            <img src="https://i.ibb.co.com/tGFkFbL/IMG-2849.jpg" alt="Ketupat Horizon Hecker" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Ketupat HORIZON/HECKER</h3>
+                            <span class="product-category">Trinity</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 40.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%20Ketupat%20Horizon%2FHecker" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ✅ PERBAIKAN: Item habis pakai class sold-out-card + tombol disabled -->
+                    <div class="product-card sold-out-card">
+                        <div class="product-img">
+                            <span class="stock-badge sold-out">HABIS</span>
+                            <img src="https://i.ibb.co.com/hRpw1Y6r/IMG-2466.jpg" alt="Ketupat Lvl Max" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">KETUPAT LVL MAX HECKER</h3>
+                            <span class="product-category">Trinity</span>
+                            <div class="product-footer">
+                                <div class="product-price sold-out-price">Stok habis</div>
+                                <button class="btn btn-disabled btn-sm" disabled><i class="fa-solid fa-ban"></i> Habis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL KATALOG 2: INSIDE BRAINROT HEAD -->
+    <div class="modal-overlay" id="catalog2Modal" role="dialog" aria-modal="true" aria-labelledby="catalog2Title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="catalog2Title">
+                    <img src="https://i.ibb.co.com/4RZ3fq7G/IMG-2758.jpg" alt="Logo Inside Brainrot Head" class="modal-logo">
+                    Inside Brainrot Head
+                </h2>
+                <button class="close-modal" id="closeCatalog2Btn" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge">Tersedia</span>
+                            <img src="https://i.ibb.co.com/s9g5Lg0T/IMG-2870.jpg" alt="20Qn/detik" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">20Qn/detik</h3>
+                            <span class="product-category">Abadi</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 1.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%2020Qn%2Fdetik" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge low">Stok Menipis</span>
+                            <img src="https://i.ibb.co.com/s9g5Lg0T/IMG-2870.jpg" alt="100Qn/detik" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">100Qn/detik</h3>
+                            <span class="product-category">Abadi</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 3.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%20100Qn%2Fdetik" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-img">
+                            <span class="stock-badge low">Stok Menipis</span>
+                            <img src="https://i.ibb.co.com/s9g5Lg0T/IMG-2870.jpg" alt="1Sx/detik" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">1Sx/detik</h3>
+                            <span class="product-category">Abadi</span>
+                            <div class="product-footer">
+                                <div class="product-price">Rp 15.000</div>
+                                <a href="https://wa.me/6285184399286?text=Halo%20min%2C%20mau%20beli%201Sx%2Fdetik" target="_blank" rel="noopener" class="btn btn-primary btn-sm"><i class="fa-brands fa-whatsapp"></i> Beli</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ✅ PERBAIKAN: Item habis -->
+                    <div class="product-card sold-out-card">
+                        <div class="product-img">
+                            <span class="stock-badge sold-out">HABIS</span>
+                            <img src="https://i.ibb.co.com/s9g5Lg0T/IMG-2870.jpg" alt="15Sx/detik" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">15Sx/detik</h3>
+                            <span class="product-category">Abadi</span>
+                            <div class="product-footer">
+                                <div class="product-price sold-out-price">Stok habis</div>
+                                <button class="btn btn-disabled btn-sm" disabled><i class="fa-solid fa-ban"></i> Habis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ TAMBAHAN: Toast notification -->
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="toastMessage">Item sedang habis!</span>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" class="section-padding" style="background: #0d0d0d;">
+        <div class="container">
+            <h2 class="section-title">Kata <span class="text-gradient">Mereka</span></h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="review-header">
+                        <img src="https://picsum.photos/seed/user1/100/100" class="avatar" alt="Riantzy" loading="lazy">
+                        <div class="user-info">
+                            <h4>Riantzy</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Makasih kak amanah terus!"</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="review-header">
+                        <img src="https://i.ibb.co.com/3mNtfQXC/IMG-0708.png" class="avatar" alt="Nao Roblox" loading="lazy">
+                        <div class="user-info">
+                            <h4>Nao Roblox</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Done makasih kak Nuna."</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="review-header">
+                        <img src="https://picsum.photos/seed/user3/100/100" class="avatar" alt="Buyer" loading="lazy">
+                        <div class="user-info">
+                            <h4>Beli Tiktak Kak</h4>
+                            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        </div>
+                    </div>
+                    <p class="review-text">"Otw langganan hehehe."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section-padding">
+        <div class="container">
+            <h2 class="section-title">Pertanyaan <span class="text-gradient">Umum (FAQ)</span></h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question" tabindex="0" role="button" aria-expanded="false">Apakah transaksi aman? <i class="fa-solid fa-chevron-down"></i></div>
+                    <!-- ✅ PERBAIKAN: "rekening bersiap" → "rekening bersama" -->
+                    <div class="faq-answer">Tentu! Kami menggunakan sistem rekening bersama untuk transaksi nominal besar, dan kami memiliki rekam jejak ribuan transaksi sukses.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" tabindex="0" role="button" aria-expanded="false">Berapa lama proses pengiriman item? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Rata-rata 5-15 menit setelah bukti pembayaran terkonfirmasi oleh admin kami.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" tabindex="0" role="button" aria-expanded="false">Metode pembayaran apa saja? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Kami menerima Transfer Bank (BCA, Mandiri, BRI), E-Wallet (GoPay, OVO, Dana, ShopeePay), dan QRIS.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" tabindex="0" role="button" aria-expanded="false">Apakah ada garansi? <i class="fa-solid fa-chevron-down"></i></div>
+                    <div class="faq-answer">Ya, kami memberikan garansi penuh jika item gagal dikirim ke akun Anda karena kesalahan dari pihak kami.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-info">
+                    <a href="#" class="logo"><i class="fa-solid fa-gamepad"></i><span class="text-gradient">NUNA STORE</span></a>
+                    <p>Platform jual beli aset gaming Roblox terpercaya, aman, dan paling hemat di Indonesia.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        <a href="#" class="social-icon" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Produk</a></li>
+                        <li><a href="#testimonials">Testimoni</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Kontak</h4>
+                    <ul>
+                        <li><i class="fa-brands fa-whatsapp"></i> +62 851-8439-9286</li>
+                        <li><i class="fa-solid fa-envelope"></i> support@nunastore.id</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- ✅ PERBAIKAN: 2026 → 2025 -->
+            <div class="copyright">&copy; 2025 Nuna Store. All Rights Reserved. Designed for Gamers.</div>
+        </div>
+    </footer>
+
+    <!-- Floating WA -->
+    <a href="https://wa.me/6285184399286" class="float-wa" target="_blank" rel="noopener" title="Chat WhatsApp" aria-label="Chat WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        hamburger.addEventListener('click', () => {
+            const isActive = navMenu.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isActive);
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars', !isActive);
+            icon.classList.toggle('fa-xmark', isActive);
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                const icon = hamburger.querySelector('i');
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // 2. Sticky Navbar Effect on Scroll
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(10, 10, 10, 0.95)';
+                navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.5)';
+                navbar.style.padding = '15px 0';
+            } else {
+                navbar.style.background = 'rgba(10, 10, 10, 0.8)';
+                navbar.style.boxShadow = 'none';
+                navbar.style.padding = '20px 0';
+            }
+        });
+
+        // 3. FAQ Accordion (click + keyboard)
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            const toggleFAQ = () => {
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                    }
+                });
+                const isOpening = !item.classList.contains('active');
+                item.classList.toggle('active');
+                question.setAttribute('aria-expanded', isOpening);
+            };
+
+            question.addEventListener('click', toggleFAQ);
+            question.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleFAQ();
+                }
+            });
+        });
+
+        // 4. Catalog Modal Pop-up Logic
+        const catalog1Modal = document.getElementById('catalog1Modal');
+        const catalog2Modal = document.getElementById('catalog2Modal');
+
+        function openModal(modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Focus ke close button untuk aksesibilitas
+            setTimeout(() => {
+                modal.querySelector('.close-modal').focus();
+            }, 100);
+        }
+
+        function closeModal(modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('openCatalog1Btn').addEventListener('click', () => openModal(catalog1Modal));
+        document.getElementById('closeCatalog1Btn').addEventListener('click', () => closeModal(catalog1Modal));
+        catalog1Modal.addEventListener('click', (e) => { if (e.target === catalog1Modal) closeModal(catalog1Modal); });
+
+        document.getElementById('openCatalog2Btn').addEventListener('click', () => openModal(catalog2Modal));
+        document.getElementById('closeCatalog2Btn').addEventListener('click', () => closeModal(catalog2Modal));
+        catalog2Modal.addEventListener('click', (e) => { if (e.target === catalog2Modal) closeModal(catalog2Modal); });
+
+        // ✅ PERBAIKAN: Tutup modal dengan Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                [catalog1Modal, catalog2Modal].forEach(modal => {
+                    if (modal.classList.contains('active')) closeModal(modal);
+                });
+            }
+        });
+
+        // ✅ TAMBAHAN: Counter Animation untuk Stats
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const duration = 2000; // 2 detik
+                const step = target / (duration / 16); // ~60fps
+                let current = 0;
+
+                const update = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current).toLocaleString('id-ID');
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.textContent = target.toLocaleString('id-ID');
+                    }
+                };
+                update();
+            });
+        }
+
+        // Jalankan counter saat stats section terlihat
+        const statsSection = document.querySelector('.stats');
+        let countersAnimated = false;
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countersAnimated) {
+                    countersAnimated = true;
+                    animateCounters();
+                }
+            });
+        }, { threshold: 0.5 });
+        statsObserver.observe(statsSection);
+
+        // 5. Smooth Reveal Animation on Scroll
+        const revealElements = document.querySelectorAll('.testimonial-card, .catalog-card, .step-item');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+            revealElements.forEach((el) => {
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        revealElements.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `all 0.6s ease-out ${i * 0.1}s`;
+        });
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+    </script>
+</body>
+</html>
